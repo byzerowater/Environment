@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yapglobal.environment.utils;
+package com.yapglobal.environment.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -1,10 +1,14 @@
-package com.yapglobal.environment.utils;
+package com.yapglobal.environment.util;
 
 import android.content.Context;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.Transformation;
+import com.yapglobal.environment.injection.ApplicationContext;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Created by YoungSoo Kim on 2016-06-17.
@@ -12,6 +16,7 @@ import com.bumptech.glide.load.Transformation;
  * youngsoo.kim@yap.net
  * 이미지 로드 유틸
  */
+@Singleton
 public class ImageLoader {
     /**
      * Instance
@@ -26,23 +31,9 @@ public class ImageLoader {
      * 이미지 로드 유틸
      *
      * @param context Context
-     * @return ImageLoader
      */
-    public static ImageLoader getInstance(Context context) {
-        if (ourInstance == null) {
-            Context applicationContext = context.getApplicationContext();
-            context = applicationContext == null ? context : applicationContext;
-            ourInstance = new ImageLoader(context);
-        }
-        return ourInstance;
-    }
-
-    /**
-     * 이미지 로드 유틸
-     *
-     * @param context Context
-     */
-    private ImageLoader(Context context) {
+    @Inject
+    public ImageLoader(@ApplicationContext Context context) {
         mContext = context;
     }
 

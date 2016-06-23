@@ -1,4 +1,4 @@
-package com.yapglobal.environment.utils;
+package com.yapglobal.environment.util;
 
 import android.text.TextUtils;
 

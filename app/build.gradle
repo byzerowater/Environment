@@ -13,7 +13,11 @@ android {
         versionName "1.0"
     }
     buildTypes {
+        debug {
+            buildConfigField "String", "BASE_URL", "\"debug_base_url\""
+        }
         release {
+            buildConfigField "String", "BASE_URL", "\"release_base_url\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
