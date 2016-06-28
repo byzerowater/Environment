@@ -63,3 +63,10 @@
 
 # Application classes that will be serialized/deserialized over Gson
 -keep class com.yapglobal.environment.data.model.** { *; }
+
+# Otto EventBus rules
+-keepattributes *Annotation*
+-keepclassmembers class ** {
+    @com.squareup.otto.Subscribe public *;
+    @com.squareup.otto.Produce public *;
+}
