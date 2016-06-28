@@ -1,6 +1,7 @@
 package com.yapglobal.environment.data;
 
 import com.yapglobal.environment.data.remote.EnvironmentService;
+import com.yapglobal.environment.data.remote.EventPosterHelper;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -15,10 +16,13 @@ import javax.inject.Singleton;
 public class DataManager {
 
     private final EnvironmentService mEnvironmentService;
+    private final EventPosterHelper mEventPoster;
 
     @Inject
-    public DataManager(EnvironmentService environmentService) {
+    public DataManager(EnvironmentService environmentService,
+                       EventPosterHelper eventPoster) {
         mEnvironmentService = environmentService;
+        mEventPoster = eventPoster;
     }
 
 //    public Single<List<Shot>> getShots(int perPage, int page) {
