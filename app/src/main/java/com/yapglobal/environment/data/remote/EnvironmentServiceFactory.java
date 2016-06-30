@@ -27,7 +27,7 @@ public class EnvironmentServiceFactory {
         return makeEnvironmentService(okHttpClient);
     }
 
-    public static EnvironmentService makeEnvironmentService(OkHttpClient okHttpClient) {
+    private static EnvironmentService makeEnvironmentService(OkHttpClient okHttpClient) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BuildConfig.BASE_URL)
                 .client(okHttpClient)
@@ -37,13 +37,13 @@ public class EnvironmentServiceFactory {
         return retrofit.create(EnvironmentService.class);
     }
 
-    public static OkHttpClient makeOkHttpClient(HttpLoggingInterceptor httpLoggingInterceptor) {
+    private static OkHttpClient makeOkHttpClient(HttpLoggingInterceptor httpLoggingInterceptor) {
         return new OkHttpClient.Builder()
                 .addInterceptor(httpLoggingInterceptor)
                 .build();
     }
 
-    public static HttpLoggingInterceptor makeLoggingInterceptor() {
+    private static HttpLoggingInterceptor makeLoggingInterceptor() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY
                 : HttpLoggingInterceptor.Level.NONE);
