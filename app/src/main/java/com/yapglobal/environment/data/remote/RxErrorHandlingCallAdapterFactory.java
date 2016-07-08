@@ -60,6 +60,7 @@ public class RxErrorHandlingCallAdapterFactory extends CallAdapter.Factory {
 //            });
 //        }
 
+        @Override
         public <r> Observable adapt(Call<r> call) {
             return ((Observable) wrapped.adapt(call))
                     .onErrorResumeNext(this::hackObjectToThrowableCastException);
