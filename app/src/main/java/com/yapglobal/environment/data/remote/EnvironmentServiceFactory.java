@@ -13,6 +13,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import rx.plugins.RxJavaErrorHandler;
 
 /**
  * Provide "make" methods to create instances of {@link EnvironmentService}
@@ -38,6 +39,7 @@ public class EnvironmentServiceFactory {
                 .baseUrl(BuildConfig.BASE_URL)
                 .client(okHttpClient)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(new Gson()))
                 .build();
         return retrofit.create(EnvironmentService.class);

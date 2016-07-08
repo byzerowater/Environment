@@ -70,3 +70,6 @@
     @com.squareup.otto.Subscribe public *;
     @com.squareup.otto.Produce public *;
 }
+
+# Retrolambda rules
+-dontwarn java.lang.invoke.*
