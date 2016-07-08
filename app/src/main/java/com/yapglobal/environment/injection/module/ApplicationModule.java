@@ -3,6 +3,7 @@ package com.yapglobal.environment.injection.module;
 import android.app.Application;
 import android.content.Context;
 
+import com.squareup.otto.Bus;
 import com.yapglobal.environment.data.remote.EnvironmentService;
 import com.yapglobal.environment.data.remote.EnvironmentServiceFactory;
 import com.yapglobal.environment.injection.ApplicationContext;
@@ -34,6 +35,12 @@ public class ApplicationModule {
     @ApplicationContext
     Context provideContext() {
         return mApplication;
+    }
+
+    @Provides
+    @Singleton
+    Bus provideEventBus() {
+        return new Bus();
     }
 
     @Provides

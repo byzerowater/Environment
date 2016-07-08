@@ -3,7 +3,12 @@ package com.yapglobal.environment.data.remote;
 import com.google.gson.Gson;
 import com.yapglobal.environment.BuildConfig;
 
+import java.io.IOException;
+
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -13,6 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Provide "make" methods to create instances of {@link EnvironmentService}
  * and its related dependencies, such as OkHttpClient, Gson, etc.
  */
+
 /**
  * Created by YoungSoo Kim on 2016-06-23.
  * company Ltd
@@ -23,7 +29,7 @@ public class EnvironmentServiceFactory {
 
 
     public static EnvironmentService makeEnvironmentService() {
-        OkHttpClient okHttpClient = makeOkHttpClient(makeLoggingInterceptor());
+        OkHttpClient okHttpClient = makeOkHttpClient(makeLoggingInterceptor(), makeHeaderInterceptor());
         return makeEnvironmentService(okHttpClient);
     }
 
@@ -37,9 +43,10 @@ public class EnvironmentServiceFactory {
         return retrofit.create(EnvironmentService.class);
     }
 
-    private static OkHttpClient makeOkHttpClient(HttpLoggingInterceptor httpLoggingInterceptor) {
+    private static OkHttpClient makeOkHttpClient(HttpLoggingInterceptor httpLoggingInterceptor, Interceptor headerInterceptor) {
         return new OkHttpClient.Builder()
                 .addInterceptor(httpLoggingInterceptor)
+                .addInterceptor(headerInterceptor)
                 .build();
     }
 
@@ -48,5 +55,23 @@ public class EnvironmentServiceFactory {
         logging.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY
                 : HttpLoggingInterceptor.Level.NONE);
         return logging;
+    }
+
+    private static Interceptor makeHeaderInterceptor() {
+        return new Interceptor() {
+            @Override
+            public Response intercept(Interceptor.Chain chain) throws IOException {
+                Request original = chain.request();
+
+                Request request = original.newBuilder()
+                        .header("User-Agent", "Your-App-Name")
+                        .header("Accept", "application/vnd.yourapi.v1.full+json")
+                        .method(original.method(), original.body())
+                        .build();
+
+                return chain.proceed(request);
+            }
+
+        };
     }
 }
