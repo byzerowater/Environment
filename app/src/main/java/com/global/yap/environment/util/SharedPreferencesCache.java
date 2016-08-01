@@ -66,6 +66,8 @@ public class SharedPreferencesCache {
         this.file = context.getSharedPreferences(cacheName, Context.MODE_PRIVATE);
     }
 
+
+
     public synchronized void reloadAll() {
         Map<String, ?> allCachedEntries = file.getAll();
         for (String key : allCachedEntries.keySet()) {

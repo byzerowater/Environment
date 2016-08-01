@@ -1,5 +1,13 @@
 package com.global.yap.environment.data.remote;
 
+import com.global.yap.environment.data.model.AccessTokenResponse;
+
+import java.util.List;
+
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import rx.Observable;
+
 /**
  * Created by YoungSoo Kim on 2016-06-23.
  * company Ltd
@@ -8,6 +16,8 @@ package com.global.yap.environment.data.remote;
  */
 public interface NetworkService {
 
+    @GET("/api/anonymous/client/token/insert")
+    Observable<AccessTokenResponse> getAccessToken();
 
 
 //    /**

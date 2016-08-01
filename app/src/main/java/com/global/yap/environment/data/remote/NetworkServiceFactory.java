@@ -1,9 +1,22 @@
 package com.global.yap.environment.data.remote;
 
+import android.app.Activity;
+import android.content.Context;
+import android.os.Build;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
+import android.util.Log;
+
+import com.global.yap.environment.data.local.PreferencesHelper;
+import com.global.yap.environment.injection.ApplicationContext;
+import com.global.yap.environment.util.StringUtil;
+import com.global.yap.environment.util.Util;
 import com.google.gson.Gson;
 import com.global.yap.environment.BuildConfig;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.UUID;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -13,11 +26,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-/**
- * Provide "make" methods to create instances of {@link EnvironmentService}
- * and its related dependencies, such as OkHttpClient, Gson, etc.
- */
+import timber.log.Timber;
 
 /**
  * Created by YoungSoo Kim on 2016-06-23.
@@ -28,51 +37,32 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkServiceFactory {
 
 
-    public static NetworkService makeEnvironmentService() {
-        OkHttpClient okHttpClient = makeOkHttpClient(makeLoggingInterceptor(), makeHeaderInterceptor());
-        return makeEnvironmentService(okHttpClient);
+    public static NetworkService makeNetworkService(@ApplicationContext Context context) {
+        OkHttpClient okHttpClient = makeOkHttpClient(context);
+        return makeNetworkService(okHttpClient);
     }
 
-    private static NetworkService makeEnvironmentService(OkHttpClient okHttpClient) {
+    private static NetworkService makeNetworkService(OkHttpClient okHttpClient) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BuildConfig.BASE_URL)
                 .client(okHttpClient)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(new Gson()))
                 .build();
         return retrofit.create(NetworkService.class);
     }
 
-    private static OkHttpClient makeOkHttpClient(HttpLoggingInterceptor httpLoggingInterceptor, Interceptor headerInterceptor) {
-        return new OkHttpClient.Builder()
-                .addInterceptor(httpLoggingInterceptor)
-                .addInterceptor(headerInterceptor)
-                .build();
-    }
+    private static OkHttpClient makeOkHttpClient(@ApplicationContext Context context) {
 
-    private static HttpLoggingInterceptor makeLoggingInterceptor() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY
                 : HttpLoggingInterceptor.Level.NONE);
-        return logging;
-    }
 
-    private static Interceptor makeHeaderInterceptor() {
-        return new Interceptor() {
-            @Override
-            public Response intercept(Interceptor.Chain chain) throws IOException {
-                Request original = chain.request();
 
-                Request request = original.newBuilder()
-                        .header("User-Agent", "Your-App-Name")
-                        .header("Accept", "application/vnd.yourapi.v1.full+json")
-                        .method(original.method(), original.body())
-                        .build();
-
-                return chain.proceed(request);
-            }
-
-        };
+        return new OkHttpClient.Builder()
+                .addInterceptor(logging)
+                .addInterceptor(new HeaderInterceptor(context))
+                .addInterceptor(new UnauthorisedInterceptor(context))
+                .build();
     }
 }

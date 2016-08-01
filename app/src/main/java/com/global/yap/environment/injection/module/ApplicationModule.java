@@ -37,6 +37,8 @@ public class ApplicationModule {
         return mApplication;
     }
 
+
+
     @Provides
     @Singleton
     Bus provideEventBus() {
@@ -45,8 +47,8 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    NetworkService provideEnvironmentService() {
-        return NetworkServiceFactory.makeEnvironmentService();
+    NetworkService provideNetworkService() {
+        return NetworkServiceFactory.makeNetworkService(mApplication);
     }
 
 }

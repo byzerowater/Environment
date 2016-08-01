@@ -1,10 +1,14 @@
 package com.global.yap.environment.data;
 
+import com.global.yap.environment.data.local.PreferencesHelper;
+import com.global.yap.environment.data.model.AccessTokenResponse;
 import com.global.yap.environment.data.remote.NetworkService;
 import com.global.yap.environment.data.remote.EventPosterHelper;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import rx.Observable;
 
 /**
  * Created by YoungSoo Kim on 2016-06-23.
@@ -16,13 +20,24 @@ import javax.inject.Singleton;
 public class DataManager {
 
     private final NetworkService mNetworkService;
+    private final PreferencesHelper mPreferencesHelper;
     private final EventPosterHelper mEventPoster;
 
     @Inject
     public DataManager(NetworkService networkService,
+                       PreferencesHelper preferencesHelper,
                        EventPosterHelper eventPoster) {
         mNetworkService = networkService;
+        mPreferencesHelper = preferencesHelper;
         mEventPoster = eventPoster;
+    }
+
+    public void putClientId(String clientId) {
+        mPreferencesHelper.putClientId(clientId);
+    }
+
+    public Observable<AccessTokenResponse> getAccessToken() {
+        return mNetworkService.getAccessToken();
     }
 
 //    public Single<List<Shot>> getShots(int perPage, int page) {
