@@ -1,9 +1,14 @@
 # Environment
 프로젝트 환경설정
-RxJava
-RxAndroid
-Dagger2
-Retrofit2
-RetroLambda
-MVP
-Butter Knife
+Libraries
+
+The libraries and tools used include:
+
+Support library
+RxJava and RxAndroid
+Retrofit and OkHttp
+Dagger 2
+Butterknife
+Timber
+Glide
+Otto event bus
