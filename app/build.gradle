@@ -10,7 +10,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "com.yapglobal.environment"
+        applicationId "com.zerowater.environment"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
