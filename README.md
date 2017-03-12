@@ -12,3 +12,4 @@ The libraries and tools used include:
 - [Timber] (https://github.com/JakeWharton/timber)
 - [Glide](https://github.com/bumptech/glide)
 - [Otto](http://square.github.io/otto/) event bus
+- [RetroLambda](https://github.com/evant/gradle-retrolambda) RetroLambda
