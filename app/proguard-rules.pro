@@ -37,7 +37,7 @@
 
 # OkHttp rules
 -dontwarn okhttp3.**
--dontwarn okio.*
+-dontwarn okio.**
 
 # Butterknife rules
 # Retain generated class which implement ViewBinder.
