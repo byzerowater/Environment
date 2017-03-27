@@ -13,3 +13,8 @@ The libraries and tools used include:
 - [Glide](https://github.com/bumptech/glide)
 - [Otto](http://square.github.io/otto/) event bus
 - [RetroLambda](https://github.com/evant/gradle-retrolambda)
+
+참고
+- [Ribot](https://github.com/ribot/ribot-app-android)
+
+ 
