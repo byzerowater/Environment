@@ -3,7 +3,7 @@ package com.zerowater.environment.ui.splash;
 import com.zerowater.environment.data.DataManager;
 import com.zerowater.environment.data.model.AccessTokenData;
 import com.zerowater.environment.data.model.AccessTokenResponse;
-import com.zerowater.environment.ui.base.Presenter;
+import com.zerowater.environment.ui.base.BasePresenter;
 import com.zerowater.environment.util.AESUtil;
 
 import javax.inject.Inject;
@@ -14,10 +14,9 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class SplashPresenter implements Presenter<SplashMvpView> {
+public class SplashPresenter extends BasePresenter<SplashMvpView> {
 
     private final DataManager mDataManager;
-    private SplashMvpView mMvpView;
     private Subscription mSubscription;
 
     @Inject
@@ -26,13 +25,8 @@ public class SplashPresenter implements Presenter<SplashMvpView> {
     }
 
     @Override
-    public void attachView(SplashMvpView mvpView) {
-        mMvpView = mvpView;
-    }
-
-    @Override
     public void detachView() {
-        mMvpView = null;
+        super.detachView();
         if (mSubscription != null) mSubscription.unsubscribe();
     }
 
