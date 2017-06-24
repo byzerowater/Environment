@@ -2,13 +2,13 @@ package com.zerowater.environment.data;
 
 import com.zerowater.environment.data.local.PreferencesHelper;
 import com.zerowater.environment.data.model.AccessTokenResponse;
-import com.zerowater.environment.data.remote.NetworkService;
 import com.zerowater.environment.data.remote.EventPosterHelper;
+import com.zerowater.environment.data.remote.NetworkService;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import rx.Observable;
+import io.reactivex.Single;
 
 /**
  * Created by YoungSoo Kim on 2016-06-23.
@@ -36,7 +36,7 @@ public class DataManager {
         mPreferencesHelper.putClientId(clientId);
     }
 
-    public Observable<AccessTokenResponse> getAccessToken() {
+    public Single<AccessTokenResponse> getAccessToken() {
         return mNetworkService.getAccessToken();
     }
 

@@ -8,16 +8,17 @@ import com.zerowater.environment.util.AESUtil;
 
 import javax.inject.Inject;
 
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class SplashPresenter extends BasePresenter<SplashMvpView> {
 
     private final DataManager mDataManager;
-    private Subscription mSubscription;
+    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     @Inject
     public SplashPresenter(DataManager dataManager) {
@@ -27,30 +28,29 @@ public class SplashPresenter extends BasePresenter<SplashMvpView> {
     @Override
     public void detachView() {
         super.detachView();
-        if (mSubscription != null) mSubscription.unsubscribe();
+        if (mCompositeDisposable != null) mCompositeDisposable.dispose();
     }
 
     public void getAccessToken() {
-        mSubscription = mDataManager.getAccessToken()
+     mDataManager.getAccessToken()
                 .map(accessTokenResponse -> decryptClientId(accessTokenResponse))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<String>() {
+                .subscribe(new SingleObserver<String>() {
                     @Override
-                    public void onCompleted() {
-                        Timber.d("onCompleted");
+                    public void onSubscribe(Disposable d) {
+                        mCompositeDisposable.add(d);
+                    }
+
+                    @Override
+                    public void onSuccess(String s) {
+                        Timber.i("onNext : " + s);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Timber.d("onError");
                         Timber.e("Error getAccessToken out: " + e);
                         e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onNext(String clientId) {
-                        Timber.i("onNext : " + clientId);
                     }
                 });
     }

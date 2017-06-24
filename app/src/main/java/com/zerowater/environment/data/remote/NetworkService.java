@@ -2,8 +2,8 @@ package com.zerowater.environment.data.remote;
 
 import com.zerowater.environment.data.model.AccessTokenResponse;
 
+import io.reactivex.Single;
 import retrofit2.http.GET;
-import rx.Observable;
 
 /**
  * Created by YoungSoo Kim on 2016-06-23.
@@ -14,7 +14,7 @@ import rx.Observable;
 public interface NetworkService {
 
     @GET("/api/anonymous/client/token/insert")
-    Observable<AccessTokenResponse> getAccessToken();
+    Single<AccessTokenResponse> getAccessToken();
 
 
 //    /**
